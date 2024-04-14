@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+
+User -> LoginScreen : Write password
+LoginScreen -> LoginScreenModel : Call onPasswordChange
+LoginScreenModel -> LoginScreenModel : Call password.isNotEmpty
+LoginScreenModel -> LoginScreenModel : Reduce the state with password validation
+LoginScreenModel -> LoginScreen : Update the UI state so login button is enabled
+LoginScreen --> User : Recompose the UI by change
+User -> LoginScreen : Click on login button
+LoginScreen -> LoginScreenModel : Call onLoginClick
+LoginScreenModel -> LoginUseCase : Call invoke with userCredentials
+LoginUseCase -> UserRepository : Call login with userCredentials
+UserRepository -> UserRemoteDataSource : Call login userCredentials
+
+alt Password user is correct
+UserRemoteDataSource --> UserRepository : Return logged in User
+UserRepository -> UserLocalDataSource : Call login with userCredentials
+UserLocalDataSource --> UserRepository : Return logged in User
+UserRepository --> LoginUseCase : Return logged in User
+LoginUseCase --> LoginScreenModel : Return logged in User
+LoginScreenModel -> LoginScreenModel : Post a side effect with user logged in successfully
+else Password user is not correct
+UserRemoteDataSource --> UserRepository : Return invalid password error
+UserRepository --> LoginUseCase : Return invalid password error
+LoginUseCase --> LoginScreenModel : Return invalid password error
+LoginScreenModel -> LoginScreenModel : Post a side effect with invalid password error
+end
+
+LoginScreenModel --> LoginScreen : Launch the side effect to display a dialog
+LoginScreen -> LoginScreen : Display dialog
+
+@enduml

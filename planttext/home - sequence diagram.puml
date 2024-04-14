@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+
+User -> HomeScreen : Write email
+HomeScreen -> HomeScreenModel : Call onEmailChange with email
+HomeScreenModel -> HomeScreenModel : Call isValidEmail
+HomeScreenModel -> HomeScreenModel : Reduce the state with email validation
+HomeScreenModel -> HomeScreen : Update the UI state so start button is enabled
+HomeScreen --> User : Recompose the UI by change
+User -> HomeScreen : Click on start button
+HomeScreen -> HomeScreenModel : Call onStartClick with email
+HomeScreenModel -> CheckAccountExistenceAndAuthenticationUseCase : Call invoke with email
+CheckAccountExistenceAndAuthenticationUseCase -> UserRepository : Call checkAccountExistenceAndAuthentication with email
+UserRepository -> UserRemoteDataSource : Call checkAccountExistenceAndAuthentication with email
+UserRemoteDataSource --> UserRepository : Returns a boolean whether a user with that email exists
+UserRepository --> CheckAccountExistenceAndAuthenticationUseCase : Returns a boolean whether a user with that email exists
+CheckAccountExistenceAndAuthenticationUseCase --> HomeScreenModel : Returns a boolean whether a user with that email exists
+
+alt user exists
+HomeScreenModel -> HomeScreenModel : Post a side effect to navigate to LoginScreen
+else user does not exist
+HomeScreenModel -> HomeScreenModel : Post a side effect to navigate to SignupScreen
+end
+
+HomeScreenModel --> HomeScreen : Launch the side effect to navigate
+HomeScreen --> HomeScreen : Push Login/Signup screen
+
+@enduml

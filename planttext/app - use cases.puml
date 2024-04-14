@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+User --> (RegisterUserUseCase)
+User --> (LoginUseCase)
+User --> (PasswordRecoveryUseCase)
+User --> (LogoutUseCase)
+User --> (CheckAccountExistenceAndAuthenticationUseCase)
+
+@enduml
