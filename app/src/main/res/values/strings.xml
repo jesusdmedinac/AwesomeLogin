@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AwesomeLogin</string>
+    <string name="start">Empezar</string>
 </resources>

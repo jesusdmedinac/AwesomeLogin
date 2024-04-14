@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kspPlugin)
 }
 
 android {
@@ -59,9 +60,16 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.voyager.navigator)
-    implementation(libs.voyager.navigator.screenmodel)
+    implementation(libs.voyager.screenmodel)
+    implementation(libs.voyager.koin)
     implementation(libs.orbit.mvi)
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.orbit.mvi.test)
+    testImplementation(libs.koin.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

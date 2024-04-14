@@ -7,9 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.Navigator
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.screens.LoginScreen
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.ui.theme.AwesomeLoginTheme
+import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
+import com.jesusdmedinac.baubap.awesomelogin.splash.SplashModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.compose.SplashScreen
+import org.koin.compose.KoinApplication
+import org.koin.ksp.generated.module
 
 @Composable
 fun App() {
@@ -18,7 +21,14 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Navigator(SplashScreen)
+            KoinApplication(application = {
+                modules(
+                    HomeModule().module,
+                    SplashModule().module,
+                )
+            }) {
+                Navigator(SplashScreen())
+            }
         }
     }
 }

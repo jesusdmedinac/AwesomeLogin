@@ -13,10 +13,11 @@
         android:theme="@style/Theme.AwesomeLogin"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".core.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AwesomeLogin">
+            android:theme="@style/Theme.AwesomeLogin"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
