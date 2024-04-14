@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.presentation.theme
+package com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.ui.theme
 
 import android.app.Activity
 import android.os.Build
