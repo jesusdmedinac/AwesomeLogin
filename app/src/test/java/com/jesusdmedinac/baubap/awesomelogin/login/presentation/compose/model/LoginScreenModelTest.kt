@@ -62,8 +62,8 @@ class LoginScreenModelTest : KoinTest {
     fun `onLoginClick should post UserLoggedInSuccessfully given loginUseCase returns result as success`() =
         runTest {
             // given
-            val email = "Random.nextInt().toString()"
-            val password = "Random.nextInt().toString()"
+            val email = Random.nextInt().toString()
+            val password = Random.nextInt().toString()
             val userCredentials = UserCredentials(email, password)
             val user: User = mockk()
             coEvery { loginUseCase(userCredentials) } returns Result.success(user)
@@ -75,6 +75,26 @@ class LoginScreenModelTest : KoinTest {
 
                 // then
                 expectSideEffect(LoginScreenSideEffect.UserLoggedInSuccessfully(user))
+            }
+        }
+
+    @Test
+    fun `onLoginClick should post UserLoggedInFailure given loginUseCase returns result as failure`() =
+        runTest {
+            // given
+            val email = Random.nextInt().toString()
+            val password = Random.nextInt().toString()
+            val userCredentials = UserCredentials(email, password)
+            val user: User = mockk()
+            coEvery { loginUseCase(userCredentials) } returns Result.failure(Throwable())
+            LoginScreenModel(loginUseCase).test(this, LoginScreenState(password)) {
+                expectInitialState()
+
+                // when
+                containerHost.onLoginClick(email)
+
+                // then
+                expectSideEffect(LoginScreenSideEffect.UserLoggedInFailure(email))
             }
         }
 }
