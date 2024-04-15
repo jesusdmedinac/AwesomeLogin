@@ -9,7 +9,7 @@ interface CheckAccountExistenceAndAuthenticationUseCase {
 
 @Single
 class CheckAccountExistenceAndAuthenticationUseCaseImpl(
-    val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : CheckAccountExistenceAndAuthenticationUseCase {
     override suspend fun invoke(email: String): Result<Boolean> =
         userRepository.checkAccountExistenceAndAuthentication(email)

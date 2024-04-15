@@ -13,7 +13,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 
 @Single
 class HomeScreenModel(
-    val checkAccountExistenceAndAuthenticationUseCase: CheckAccountExistenceAndAuthenticationUseCase
+    private val checkAccountExistenceAndAuthenticationUseCase: CheckAccountExistenceAndAuthenticationUseCase
 ) : ScreenModel, ContainerHost<HomeScreenState, HomeScreenSideEffect> {
     override val container: Container<HomeScreenState, HomeScreenSideEffect> =
         screenModelScope.container(HomeScreenState())
@@ -23,19 +23,13 @@ class HomeScreenModel(
     }
 
     fun onStartClick() = intent {
-        val sideEffect = runCatching { checkAccountExistenceAndAuthenticationUseCase(state.email) }
+        val sideEffect = checkAccountExistenceAndAuthenticationUseCase(state.email)
             .fold(
-                onSuccess = { checkAccountResult ->
-                    checkAccountResult
-                        .fold(
-                            onSuccess = { accountExists ->
-                                if (accountExists)
-                                    HomeScreenSideEffect.NavigateToLogin(state.email)
-                                else
-                                    HomeScreenSideEffect.NavigateToSignup(state.email)
-                            },
-                            onFailure = { HomeScreenSideEffect.NavigateToSignup(state.email) }
-                        )
+                onSuccess = { accountExists ->
+                    if (accountExists)
+                        HomeScreenSideEffect.NavigateToLogin(state.email)
+                    else
+                        HomeScreenSideEffect.NavigateToSignup(state.email)
                 },
                 onFailure = { HomeScreenSideEffect.NavigateToSignup(state.email) }
             )

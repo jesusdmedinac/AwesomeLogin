@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 
 class SignupScreen(
-    val email: String,
+    private val email: String,
 ) : Screen {
     @Composable
     override fun Content() {

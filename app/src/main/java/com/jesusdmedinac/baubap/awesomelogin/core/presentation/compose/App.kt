@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.Navigator
+import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.ui.theme.AwesomeLoginTheme
 import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
+import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.SplashModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.compose.SplashScreen
 import org.koin.compose.KoinApplication
@@ -23,7 +25,9 @@ fun App() {
         ) {
             KoinApplication(application = {
                 modules(
+                    CoreModule().module,
                     HomeModule().module,
+                    LoginModule().module,
                     SplashModule().module,
                 )
             }) {

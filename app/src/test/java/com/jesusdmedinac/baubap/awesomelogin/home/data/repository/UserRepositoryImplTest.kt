@@ -1,7 +1,8 @@
 package com.jesusdmedinac.baubap.awesomelogin.home.data.repository
 
 import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
-import com.jesusdmedinac.baubap.awesomelogin.home.data.remote.UserRemoteDataSource
+import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.UserRemoteDataSource
+import com.jesusdmedinac.baubap.awesomelogin.core.data.repository.UserRepositoryImpl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkClass

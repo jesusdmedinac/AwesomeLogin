@@ -2,30 +2,53 @@ package com.jesusdmedinac.baubap.awesomelogin.home.presentation.model
 
 import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
 import com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
+import org.koin.test.get
 import org.koin.test.inject
+import org.koin.test.mock.MockProviderRule
+import org.koin.test.mock.declareMock
 import org.orbitmvi.orbit.test.test
 import kotlin.random.Random
 
 class HomeScreenModelTest : KoinTest {
-    private val checkAccountExistenceAndAuthenticationUseCase: CheckAccountExistenceAndAuthenticationUseCase by inject()
+    private lateinit var checkAccountExistenceAndAuthenticationUseCase: CheckAccountExistenceAndAuthenticationUseCase
+
+    @get:Rule
+    val mockProvider = MockProviderRule.create { clazz ->
+        mockkClass(clazz)
+    }
 
     @Before
     fun setUp() {
         startKoin {
             modules(HomeModule().module)
         }
+        checkAccountExistenceAndAuthenticationUseCase = declareMock()
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
     }
 
     @Test
     fun `onEmailChange should reduce state with email given email`() = runTest {
         // given
-        HomeScreenModel(checkAccountExistenceAndAuthenticationUseCase).test(this, HomeScreenState()) {
+        HomeScreenModel(checkAccountExistenceAndAuthenticationUseCase).test(
+            this,
+            HomeScreenState()
+        ) {
             expectInitialState()
 
             // when
@@ -36,4 +59,67 @@ class HomeScreenModelTest : KoinTest {
             expectState { copy(email = email) }
         }
     }
+
+    @Test
+    fun `onStartClick should post NavigateToLogin given checkAccountExistenceAndAuthenticationUseCase returns result with true`() =
+        runTest {
+            // given
+            val email = Random.nextInt().toString()
+            coEvery { checkAccountExistenceAndAuthenticationUseCase(email) } returns Result
+                .success(true)
+            HomeScreenModel(checkAccountExistenceAndAuthenticationUseCase).test(
+                this,
+                HomeScreenState(email)
+            ) {
+                expectInitialState()
+
+                // when
+                containerHost.onStartClick()
+
+                // then
+                expectSideEffect(HomeScreenSideEffect.NavigateToLogin(email))
+            }
+        }
+
+    @Test
+    fun `onStartClick should post NavigateToSignup given checkAccountExistenceAndAuthenticationUseCase returns result with false`() =
+        runTest {
+            // given
+            val email = Random.nextInt().toString()
+            coEvery { checkAccountExistenceAndAuthenticationUseCase(email) } returns Result
+                .success(false)
+            HomeScreenModel(checkAccountExistenceAndAuthenticationUseCase).test(
+                this,
+                HomeScreenState(email)
+            ) {
+                expectInitialState()
+
+                // when
+                containerHost.onStartClick()
+
+                // then
+                expectSideEffect(HomeScreenSideEffect.NavigateToSignup(email))
+            }
+        }
+
+    @Test
+    fun `onStartClick should post NavigateToSignup given checkAccountExistenceAndAuthenticationUseCase returns result as failure`() =
+        runTest {
+            // given
+            val email = Random.nextInt().toString()
+            coEvery { checkAccountExistenceAndAuthenticationUseCase(email) } returns Result
+                .failure(Throwable())
+            HomeScreenModel(checkAccountExistenceAndAuthenticationUseCase).test(
+                this,
+                HomeScreenState(email)
+            ) {
+                expectInitialState()
+
+                // when
+                containerHost.onStartClick()
+
+                // then
+                expectSideEffect(HomeScreenSideEffect.NavigateToSignup(email))
+            }
+        }
 }
