@@ -1,12 +1,9 @@
-package com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.model
+package com.jesusdmedinac.baubap.awesomelogin.signup.presentation.model
 
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User
-import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials
-import com.jesusdmedinac.baubap.awesomelogin.login.domain.usecase.LoginUseCase
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenModel
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenState
+import com.jesusdmedinac.baubap.awesomelogin.signup.SignupModule
+import com.jesusdmedinac.baubap.awesomelogin.signup.domain.usecase.SignupUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkClass
@@ -19,14 +16,14 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
-import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import org.orbitmvi.orbit.test.test
 import kotlin.random.Random
 
-class LoginScreenModelTest : KoinTest {
-    private lateinit var loginUseCase: LoginUseCase
+class SignupScreenModelTest : KoinTest {
+
+    private lateinit var signupUseCase: SignupUseCase
 
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
@@ -36,9 +33,9 @@ class LoginScreenModelTest : KoinTest {
     @Before
     fun setUp() {
         startKoin {
-            modules(LoginModule().module)
+            modules(SignupModule().module)
         }
-        loginUseCase = declareMock()
+        signupUseCase = declareMock()
     }
 
     @After
@@ -49,7 +46,7 @@ class LoginScreenModelTest : KoinTest {
     @Test
     fun `onPasswordChange should reduce state with password given password`() = runTest {
         // given
-        LoginScreenModel(loginUseCase).test(this, LoginScreenState()) {
+        SignupScreenModel(signupUseCase).test(this, SignupScreenState()) {
             expectInitialState()
 
             // when
@@ -62,41 +59,41 @@ class LoginScreenModelTest : KoinTest {
     }
 
     @Test
-    fun `onLoginClick should post UserLoggedInSuccessfully given loginUseCase returns result as success`() =
+    fun `onSignupClick should post UserLoggedInSuccessfully given signupUseCase returns result as success`() =
         runTest {
             // given
             val email = Random.nextInt().toString()
             val password = Random.nextInt().toString()
             val userCredentials = UserCredentials(email, password)
             val user: User = mockk()
-            coEvery { loginUseCase(userCredentials) } returns Result.success(user)
-            LoginScreenModel(loginUseCase).test(this, LoginScreenState(password)) {
+            coEvery { signupUseCase(userCredentials) } returns Result.success(user)
+            SignupScreenModel(signupUseCase).test(this, SignupScreenState(password)) {
                 expectInitialState()
 
                 // when
-                containerHost.onLoginClick(email)
+                containerHost.onSignupClick(email)
 
                 // then
-                expectSideEffect(LoginScreenSideEffect.UserLoggedInSuccessfully(user))
+                expectSideEffect(SignupScreenSideEffect.UserSignedUpSuccessfully(user))
             }
         }
 
     @Test
-    fun `onLoginClick should post UserLoggedInFailure given loginUseCase returns result as failure`() =
+    fun `onSignupClick should post UserLoggedInFailure given signupUseCase returns result as failure`() =
         runTest {
             // given
             val email = Random.nextInt().toString()
             val password = Random.nextInt().toString()
             val userCredentials = UserCredentials(email, password)
-            coEvery { loginUseCase(userCredentials) } returns Result.failure(Throwable())
-            LoginScreenModel(loginUseCase).test(this, LoginScreenState(password)) {
+            coEvery { signupUseCase(userCredentials) } returns Result.failure(Throwable())
+            SignupScreenModel(signupUseCase).test(this, SignupScreenState(password)) {
                 expectInitialState()
 
                 // when
-                containerHost.onLoginClick(email)
+                containerHost.onSignupClick(email)
 
                 // then
-                expectSideEffect(LoginScreenSideEffect.UserLoggedInFailure(email))
+                expectSideEffect(SignupScreenSideEffect.UserSignedUpFailure(email))
             }
         }
 }

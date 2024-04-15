@@ -95,4 +95,24 @@ class UserRepositoryImplTest : KoinTest {
             // then
             assertThat(result, `is`(User(email)))
         }
+
+    @Test
+    fun `signup should return result given signup on userRemoteDataSource returns result with remoteUserCredentials`() =
+        runTest {
+            // given
+            val email = Random.nextInt().toString()
+            val password = Random.nextInt().toString()
+            val userCredentials = UserCredentials(email, password)
+            val remoteUserCredentials = mockk<RemoteUserCredentials>()
+            every { userCredentialsToRemoteUserCredentialsMapper.map(userCredentials) } returns remoteUserCredentials
+            coEvery { userRemoteDataSource.signup(remoteUserCredentials) } returns Result
+                .success(RemoteUser(email))
+
+            // when
+            val result = userRepositoryImpl.signup(userCredentials)
+                .getOrNull()
+
+            // then
+            assertThat(result, `is`(User(email)))
+        }
 }
