@@ -1,8 +1,9 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase
+package com.jesusdmedinac.baubap.awesomelogin.home.data.repository
 
 import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.repository.UserRepository
+import com.jesusdmedinac.baubap.awesomelogin.home.data.remote.UserRemoteDataSource
 import io.mockk.every
+import io.mockk.mockk
 import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
@@ -10,18 +11,18 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.koin.test.get
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
-import org.koin.test.get
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import kotlin.random.Random
 
-class CheckAccountExistenceAndAuthenticationUseCaseImplTest : KoinTest {
-    private lateinit var userRepository: UserRepository
+class UserRepositoryImplTest : KoinTest {
+    private lateinit var userRemoteDataSource: UserRemoteDataSource
 
-    private lateinit var checkAccountExistenceAndAuthenticationUseCaseImpl: CheckAccountExistenceAndAuthenticationUseCaseImpl
+    private lateinit var userRepositoryImpl: UserRepositoryImpl
 
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
@@ -35,12 +36,12 @@ class CheckAccountExistenceAndAuthenticationUseCaseImplTest : KoinTest {
                 HomeModule().module
             )
         }
-        userRepository = declareMock<UserRepository>()
-        checkAccountExistenceAndAuthenticationUseCaseImpl = get()
+        userRemoteDataSource = declareMock<UserRemoteDataSource>()
+        userRepositoryImpl = get()
     }
 
     @Test
-    fun `invoke should call checkAccountExistenceAndAuthentication on UserRepository with email`() =
+    fun `checkAccountExistenceAndAuthentication should return result given checkAccountExistenceAndAuthentication on UserRemoteDataSource`() =
         runTest {
             // given
             val email = Random.nextInt().toString()
@@ -48,10 +49,10 @@ class CheckAccountExistenceAndAuthenticationUseCaseImplTest : KoinTest {
                 Result.success(Random.nextBoolean()),
                 Result.failure(Throwable())
             ).random()
-            every { userRepository.checkAccountExistenceAndAuthentication(email) } returns anyResult
+            every { userRemoteDataSource.checkAccountExistenceAndAuthentication(email) } returns anyResult
 
             // when
-            val result = checkAccountExistenceAndAuthenticationUseCaseImpl(email)
+            val result = userRepositoryImpl.checkAccountExistenceAndAuthentication(email)
 
             // then
             assertThat(result, `is`(anyResult))

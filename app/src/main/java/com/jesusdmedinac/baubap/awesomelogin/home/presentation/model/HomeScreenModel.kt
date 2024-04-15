@@ -23,15 +23,23 @@ class HomeScreenModel(
     }
 
     fun onStartClick() = intent {
-        runCatching {
-            checkAccountExistenceAndAuthenticationUseCase(state.email)
-        }
-            .onSuccess {
-                postSideEffect(HomeScreenSideEffect.NavigateToLogin(state.email))
-            }
-            .onFailure {
-                postSideEffect(HomeScreenSideEffect.NavigateToSignup(state.email))
-            }
+        val sideEffect = runCatching { checkAccountExistenceAndAuthenticationUseCase(state.email) }
+            .fold(
+                onSuccess = { checkAccountResult ->
+                    checkAccountResult
+                        .fold(
+                            onSuccess = { accountExists ->
+                                if (accountExists)
+                                    HomeScreenSideEffect.NavigateToLogin(state.email)
+                                else
+                                    HomeScreenSideEffect.NavigateToSignup(state.email)
+                            },
+                            onFailure = { HomeScreenSideEffect.NavigateToSignup(state.email) }
+                        )
+                },
+                onFailure = { HomeScreenSideEffect.NavigateToSignup(state.email) }
+            )
+        postSideEffect(sideEffect)
     }
 }
 
