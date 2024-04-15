@@ -8,6 +8,7 @@ import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.container
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 
 @Single
@@ -22,7 +23,15 @@ class HomeScreenModel(
     }
 
     fun onStartClick() = intent {
-
+        runCatching {
+            checkAccountExistenceAndAuthenticationUseCase(state.email)
+        }
+            .onSuccess {
+                postSideEffect(HomeScreenSideEffect.NavigateToLogin(state.email))
+            }
+            .onFailure {
+                postSideEffect(HomeScreenSideEffect.NavigateToSignup(state.email))
+            }
     }
 }
 
@@ -33,4 +42,8 @@ data class HomeScreenState(
     val hasAt: Boolean get() = "@" in email
 }
 
-sealed class HomeScreenSideEffect
+sealed class HomeScreenSideEffect {
+    data object Idle : HomeScreenSideEffect()
+    data class NavigateToLogin(val email: String) : HomeScreenSideEffect()
+    data class NavigateToSignup(val email: String) : HomeScreenSideEffect()
+}

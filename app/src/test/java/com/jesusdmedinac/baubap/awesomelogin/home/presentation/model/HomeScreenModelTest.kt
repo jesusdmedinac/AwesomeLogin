@@ -1,10 +1,12 @@
 package com.jesusdmedinac.baubap.awesomelogin.home.presentation.model
 
+import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
 import com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.startKoin
+import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import org.orbitmvi.orbit.test.test
@@ -16,7 +18,7 @@ class HomeScreenModelTest : KoinTest {
     @Before
     fun setUp() {
         startKoin {
-            modules()
+            modules(HomeModule().module)
         }
     }
 
