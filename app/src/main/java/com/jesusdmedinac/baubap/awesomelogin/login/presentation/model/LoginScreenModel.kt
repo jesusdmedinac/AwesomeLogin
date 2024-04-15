@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.model
+package com.jesusdmedinac.baubap.awesomelogin.login.presentation.model
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope

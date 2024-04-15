@@ -4,6 +4,9 @@ import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User
 import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials
 import com.jesusdmedinac.baubap.awesomelogin.login.domain.usecase.LoginUseCase
+import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenModel
+import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
+import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenState
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkClass

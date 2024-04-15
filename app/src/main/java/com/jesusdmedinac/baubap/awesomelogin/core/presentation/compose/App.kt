@@ -11,6 +11,7 @@ import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.ui.theme.AwesomeLoginTheme
 import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
 import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
+import com.jesusdmedinac.baubap.awesomelogin.signup.SignupModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.SplashModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.compose.SplashScreen
 import org.koin.compose.KoinApplication
@@ -28,6 +29,7 @@ fun App() {
                     CoreModule().module,
                     HomeModule().module,
                     LoginModule().module,
+                    SignupModule().module,
                     SplashModule().module,
                 )
             }) {

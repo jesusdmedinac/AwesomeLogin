@@ -5,11 +5,12 @@ import org.koin.core.annotation.Single
 interface UserRemoteDataSource {
     fun checkAccountExistenceAndAuthentication(email: String): Result<Boolean>
     fun login(remoteUserCredentials: RemoteUserCredentials): Result<RemoteUser>
+    fun signup(remoteUserCredentials: RemoteUserCredentials): Result<RemoteUser>
 }
 
 @Single
 class UserRemoteDataSourceImpl : UserRemoteDataSource {
-    private val availableUserCredentials = listOf(
+    private val availableUserCredentials = mutableListOf(
         RemoteUserCredentials("mail@co.co", "1234"),
         RemoteUserCredentials("some@co.co", "4321"),
         RemoteUserCredentials("any@co.co", "0987"),
@@ -23,5 +24,12 @@ class UserRemoteDataSourceImpl : UserRemoteDataSource {
             availableUserCredentials
                 .first { it == remoteUserCredentials }
                 .let { RemoteUser(it.email) }
+        }
+
+    override fun signup(remoteUserCredentials: RemoteUserCredentials): Result<RemoteUser> =
+        runCatching {
+            if (remoteUserCredentials !in availableUserCredentials)
+                availableUserCredentials.add(remoteUserCredentials)
+            RemoteUser(remoteUserCredentials.email)
         }
 }

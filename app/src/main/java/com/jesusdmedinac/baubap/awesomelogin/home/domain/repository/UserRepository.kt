@@ -6,4 +6,5 @@ import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials
 interface UserRepository {
     fun checkAccountExistenceAndAuthentication(email: String): Result<Boolean>
     fun login(userCredentials: UserCredentials): Result<User>
+    fun signup(userCredentials: UserCredentials): Result<User>
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,9 +42,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.model.LoginScreenModel
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.model.LoginScreenSideEffect
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.FunctionNotAvailableAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.SimpleAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenModel
+import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 class LoginScreen(
@@ -51,6 +56,8 @@ class LoginScreen(
 ) : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
         var isPasswordVisible by remember {
             mutableStateOf(false)
         }
@@ -85,7 +92,13 @@ class LoginScreen(
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { /*TODO*/ }, navigationIcon = {})
+                TopAppBar(title = { }, navigationIcon = {
+                    IconButton(onClick = {
+                        navigator.pop()
+                    }) {
+                        Icon(Icons.Default.KeyboardArrowLeft, contentDescription = null)
+                    }
+                })
             },
             modifier = Modifier.padding(8.dp)
         ) { paddingValues ->
@@ -161,24 +174,10 @@ class LoginScreen(
             }
         )
         UserLoggedInFailureAlertDialog(
-            email = email,
             visible = isUserLoggedInFailureAlertDialogVisible,
             onDismissRequest = {
                 isUserLoggedInFailureAlertDialogVisible = false
             }
-        )
-    }
-
-    @Composable
-    private fun FunctionNotAvailableAlertDialog(
-        visible: Boolean = false,
-        onDismissRequest: () -> Unit = {}
-    ) {
-        SimpleAlertDialog(
-            title = "Esta función no está disponible",
-            message = "Nosotros te avisaremos cuando lo esté. Mientras puedes seguir disfrutando de las demás función que tenemos para ti.",
-            confirmText = "Gracias",
-            visible, onDismissRequest
         )
     }
 
@@ -199,7 +198,6 @@ class LoginScreen(
 
     @Composable
     private fun UserLoggedInFailureAlertDialog(
-        email: String,
         visible: Boolean = false,
         onDismissRequest: () -> Unit = {}
     ) {
@@ -211,34 +209,7 @@ class LoginScreen(
             onDismissRequest
         )
     }
-
-    @Composable
-    private fun SimpleAlertDialog(
-        title: String,
-        message: String,
-        confirmText: String,
-        visible: Boolean,
-        onDismissRequest: () -> Unit
-    ) {
-        AnimatedVisibility(visible = visible) {
-            AlertDialog(
-                title = {
-                    Text(text = title)
-                },
-                text = {
-                    Text(text = message)
-                },
-                onDismissRequest = onDismissRequest,
-                confirmButton = {
-                    TextButton(onClick = onDismissRequest) {
-                        Text(text = confirmText)
-                    }
-                },
-            )
-        }
-    }
 }
-
 
 @Preview
 @Composable

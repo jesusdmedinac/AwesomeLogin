@@ -23,4 +23,13 @@ class UserRepositoryImpl(
                 onFailure = { Result.failure(it) }
             )
     }
+
+    override fun signup(userCredentials: UserCredentials): Result<User> {
+        val remoteUserCredentials = userCredentialsToRemoteUserCredentialsMapper.map(userCredentials)
+        return userRemoteDataSource.signup(remoteUserCredentials)
+            .fold(
+                onSuccess = { Result.success(User(it.email)) },
+                onFailure = { Result.failure(it) }
+            )
+    }
 }
