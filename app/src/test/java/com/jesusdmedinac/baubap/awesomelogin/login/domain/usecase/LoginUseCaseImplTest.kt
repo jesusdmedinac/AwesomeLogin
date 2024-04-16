@@ -10,10 +10,12 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
 import org.koin.test.get
@@ -38,6 +40,11 @@ class LoginUseCaseImplTest : KoinTest {
         }
         userRepository = declareMock()
         loginUseCaseImpl = get()
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
     }
 
     @Test
