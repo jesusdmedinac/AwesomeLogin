@@ -1,6 +1,8 @@
 package com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +32,11 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.jesusdmedinac.baubap.awesomelogin.R
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.main.MainModule
@@ -37,6 +44,7 @@ import com.jesusdmedinac.baubap.awesomelogin.main.presentation.model.HomeScreenM
 import com.jesusdmedinac.baubap.awesomelogin.main.presentation.model.HomeScreenSideEffect
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.screens.LoginScreen
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.compose.screens.SignupScreen
+import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.compose.AwesomeAnimation
 import org.koin.compose.KoinApplication
 import org.koin.ksp.generated.module
 
@@ -82,13 +90,26 @@ class MainScreen : Screen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
         ) {
-            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(1f)
+            ) {
+                val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.waiting))
+                val progress by animateLottieCompositionAsState(
+                    composition,
+                    iterations = LottieConstants.IterateForever,
+                )
+                LottieAnimation(
+                    composition = composition,
+                    progress = { progress },
+                )
+            }
             Text(
                 text = stringResource(R.string.type_your_email_to_start),
                 style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.testTag("type_your_email_to_start")
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .testTag("type_your_email_to_start")
             )
             TextField(
                 value = emailTextFieldValue,
@@ -100,23 +121,31 @@ class MainScreen : Screen {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag("email_text_field"),
+                    .testTag("email_text_field")
+                    .padding(start = 8.dp, end = 8.dp),
             )
             if (hasAt && !isValidEmail) {
                 Text(
                     text = stringResource(R.string.type_a_valid_email),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-                    screenModel.onStartClick()
-                },
-                modifier = Modifier.fillMaxWidth().testTag("start_button"),
-                enabled = hasAt && isValidEmail
+            Row(
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             ) {
-                Text(text = stringResource(R.string.start))
+                Button(
+                    onClick = {
+                        screenModel.onStartClick()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("start_button"),
+                    enabled = hasAt && isValidEmail
+                ) {
+                    Text(text = stringResource(R.string.start))
+                }
             }
             Spacer(modifier = Modifier.height(32.dp))
         }

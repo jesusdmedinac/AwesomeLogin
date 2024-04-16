@@ -13,7 +13,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 @Single
 class SplashScreenModel : ScreenModel, ContainerHost<SplashScreenState, SplashScreenSideEffect> {
     fun navigateToHome() = intent {
-        delay(3000)
         postSideEffect(SplashScreenSideEffect.NavigateToHome)
         delay(100)
         postSideEffect(SplashScreenSideEffect.Idle)

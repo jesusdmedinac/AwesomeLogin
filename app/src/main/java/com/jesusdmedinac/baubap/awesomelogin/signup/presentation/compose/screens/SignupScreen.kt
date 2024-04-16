@@ -50,6 +50,7 @@ import com.jesusdmedinac.baubap.awesomelogin.R
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.FunctionNotAvailableAlertDialog
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.SimpleAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose.EyeIconAnimation
 import com.jesusdmedinac.baubap.awesomelogin.signup.SignupModule
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.model.SignupScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.model.SignupScreenSideEffect
@@ -139,14 +140,12 @@ class SignupScreen(
                         .fillMaxWidth()
                         .testTag("password_text_field"),
                     trailingIcon = {
-                        IconButton(onClick = {
-                            isPasswordVisible = !isPasswordVisible
-                        }) {
-                            Icon(
-                                if (isPasswordVisible) Icons.Default.CheckCircle else Icons.Default.Close,
-                                contentDescription = null
-                            )
-                        }
+                        EyeIconAnimation(
+                            isPasswordVisible,
+                            isPasswordVisibleChange = {
+                                isPasswordVisible = it
+                            }
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.weight(1f))

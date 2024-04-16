@@ -46,6 +46,11 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieClipSpec
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.jesusdmedinac.baubap.awesomelogin.R
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.FunctionNotAvailableAlertDialog
@@ -53,6 +58,7 @@ import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.SimpleAle
 import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose.EyeIconAnimation
 import org.koin.compose.KoinApplication
 import org.koin.ksp.generated.module
 
@@ -133,16 +139,16 @@ class LoginScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth().testTag("password_text_field"),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("password_text_field"),
                     trailingIcon = {
-                        IconButton(onClick = {
-                            isPasswordVisible = !isPasswordVisible
-                        }) {
-                            Icon(
-                                if (isPasswordVisible) Icons.Default.CheckCircle else Icons.Default.Close,
-                                contentDescription = null
-                            )
-                        }
+                        EyeIconAnimation(
+                            isPasswordVisible,
+                            isPasswordVisibleChange = {
+                                isPasswordVisible = it
+                            }
+                        )
                     }
                 )
                 Box(
