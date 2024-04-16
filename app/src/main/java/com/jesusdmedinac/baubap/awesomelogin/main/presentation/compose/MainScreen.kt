@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -39,7 +40,7 @@ import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.compose.screens
 import org.koin.compose.KoinApplication
 import org.koin.ksp.generated.module
 
-class HomeScreen : Screen {
+class MainScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -86,7 +87,8 @@ class HomeScreen : Screen {
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(R.string.type_your_email_to_start),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.testTag("type_your_email_to_start")
             )
             TextField(
                 value = emailTextFieldValue,
@@ -96,7 +98,9 @@ class HomeScreen : Screen {
                 },
                 isError = hasAt && !isValidEmail,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("email_text_field"),
             )
             if (hasAt && !isValidEmail) {
                 Text(
@@ -109,7 +113,7 @@ class HomeScreen : Screen {
                 onClick = {
                     screenModel.onStartClick()
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("start_button"),
                 enabled = hasAt && isValidEmail
             ) {
                 Text(text = stringResource(R.string.start))
@@ -128,6 +132,6 @@ fun HomeScreenPreview() {
             MainModule().module,
         )
     }) {
-        Navigator(screen = HomeScreen())
+        Navigator(screen = MainScreen())
     }
 }

@@ -5,7 +5,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import kotlin.random.Random
 
-class HomeScreenStateTest {
+class MainScreenStateTest {
     @Test
     fun `isValidEmail should return false given email is not valid`() {
         // given

@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -114,7 +115,8 @@ class LoginScreen(
             ) {
                 Text(
                     text = stringResource(R.string.hight_again),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.testTag("login_screen_title")
                 )
                 Text(text = buildAnnotatedString {
                     append(stringResource(R.string.type_the_password))
@@ -131,7 +133,7 @@ class LoginScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag("password_text_field"),
                     trailingIcon = {
                         IconButton(onClick = {
                             isPasswordVisible = !isPasswordVisible
@@ -159,6 +161,7 @@ class LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally)
+                        .testTag("login_button")
                 ) {
                     Text(text = stringResource(R.string.login))
                 }

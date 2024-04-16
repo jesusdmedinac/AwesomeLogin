@@ -5,6 +5,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 @Composable
 fun FunctionNotAvailableAlertDialog(
@@ -30,7 +32,7 @@ fun SimpleAlertDialog(
     AnimatedVisibility(visible = visible) {
         AlertDialog(
             title = {
-                Text(text = title)
+                Text(text = title, modifier = Modifier.testTag("simple_alert_dialog_title"))
             },
             text = {
                 Text(text = message)

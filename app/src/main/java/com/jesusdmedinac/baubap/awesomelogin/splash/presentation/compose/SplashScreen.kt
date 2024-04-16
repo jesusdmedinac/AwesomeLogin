@@ -16,7 +16,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
-import com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose.HomeScreen
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose.MainScreen
 import com.jesusdmedinac.baubap.awesomelogin.splash.SplashModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.model.SplashScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.model.SplashScreenSideEffect
@@ -37,7 +37,7 @@ class SplashScreen : Screen {
 
         LaunchedEffect(sideEffect) {
             if (sideEffect is SplashScreenSideEffect.NavigateToHome) {
-                navigator.push(HomeScreen())
+                navigator.push(MainScreen())
             }
         }
         LaunchedEffect(Unit) {

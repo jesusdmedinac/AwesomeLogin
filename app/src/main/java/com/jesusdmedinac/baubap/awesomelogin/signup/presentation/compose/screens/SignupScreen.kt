@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -113,7 +114,11 @@ class SignupScreen(
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.create_a_new_account), style = MaterialTheme.typography.titleLarge)
+                Text(
+                    text = stringResource(R.string.create_a_new_account),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.testTag("signup_screen_title")
+                )
                 Text(text = buildAnnotatedString {
                     append(stringResource(R.string.with_your_account))
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -130,7 +135,9 @@ class SignupScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("password_text_field"),
                     trailingIcon = {
                         IconButton(onClick = {
                             isPasswordVisible = !isPasswordVisible
@@ -148,7 +155,8 @@ class SignupScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .align(Alignment.CenterHorizontally),
+                        .align(Alignment.CenterHorizontally)
+                        .testTag("signup_button")
                 ) {
                     Text(text = stringResource(R.string.create_my_account))
                 }

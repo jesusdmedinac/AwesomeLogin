@@ -18,7 +18,7 @@ import org.koin.test.mock.declareMock
 import org.orbitmvi.orbit.test.test
 import kotlin.random.Random
 
-class HomeScreenModelTest : KoinTest {
+class MainScreenModelTest : KoinTest {
     private lateinit var checkAccountExistenceAndAuthenticationUseCase: CheckAccountExistenceAndAuthenticationUseCase
 
     @get:Rule
