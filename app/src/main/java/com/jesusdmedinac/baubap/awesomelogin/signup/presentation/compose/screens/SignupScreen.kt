@@ -42,6 +42,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -81,7 +82,7 @@ class SignupScreen(
             mutableStateOf(false)
         }
 
-        val screenModel: SignupScreenModel = getScreenModel()
+        val screenModel: SignupScreenModel = navigator.getNavigatorScreenModel()
         val sideEffect by screenModel.container.sideEffectFlow.collectAsState(initial = SignupScreenSideEffect.Idle)
 
         LaunchedEffect(sideEffect) {
@@ -120,13 +121,16 @@ class SignupScreen(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.testTag("signup_screen_title")
                 )
-                Text(text = buildAnnotatedString {
-                    append(stringResource(R.string.with_your_account))
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(email)
-                    }
-                    append(stringResource(R.string.and_enjoy_our_functions))
-                })
+                Text(
+                    text = buildAnnotatedString {
+                        append(stringResource(R.string.with_your_account))
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(email)
+                        }
+                        append(stringResource(R.string.and_enjoy_our_functions))
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                )
                 TextField(
                     value = passwordTextFieldValue,
                     onValueChange = {
@@ -146,7 +150,8 @@ class SignupScreen(
                                 isPasswordVisible = it
                             }
                         )
-                    }
+                    },
+                    textStyle = MaterialTheme.typography.labelMedium,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
@@ -157,19 +162,26 @@ class SignupScreen(
                         .align(Alignment.CenterHorizontally)
                         .testTag("signup_button")
                 ) {
-                    Text(text = stringResource(R.string.create_my_account))
+                    Text(
+                        text = stringResource(R.string.create_my_account),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
                 Text(
                     text = stringResource(R.string.problems_to_create_account),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.labelSmall,
                 )
                 TextButton(
                     onClick = { isFunctionNotAvailableAlertDialogVisible = true },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
                 ) {
-                    Text(text = stringResource(R.string.contact_us))
+                    Text(
+                        text = stringResource(R.string.contact_us),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
         }

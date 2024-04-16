@@ -2,6 +2,7 @@ package com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun SimpleAlertDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
                 TextButton(onClick = onDismissRequest) {
-                    Text(text = confirmText)
+                    Text(text = confirmText, style = MaterialTheme.typography.labelMedium)
                 }
             },
         )

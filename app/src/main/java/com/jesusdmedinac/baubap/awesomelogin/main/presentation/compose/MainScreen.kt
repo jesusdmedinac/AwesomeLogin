@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -53,7 +54,7 @@ class MainScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val screenModel: HomeScreenModel = getScreenModel()
+        val screenModel: HomeScreenModel = navigator.getNavigatorScreenModel()
         val screenState by screenModel
             .container
             .stateFlow
@@ -92,7 +93,9 @@ class MainScreen : Screen {
                 .fillMaxSize()
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().weight(1f)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
             ) {
                 val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.waiting))
                 val progress by animateLottieCompositionAsState(
@@ -123,12 +126,14 @@ class MainScreen : Screen {
                     .fillMaxWidth()
                     .testTag("email_text_field")
                     .padding(start = 8.dp, end = 8.dp),
+                textStyle = MaterialTheme.typography.labelMedium,
             )
             if (hasAt && !isValidEmail) {
                 Text(
                     text = stringResource(R.string.type_a_valid_email),
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -144,7 +149,10 @@ class MainScreen : Screen {
                         .testTag("start_button"),
                     enabled = hasAt && isValidEmail
                 ) {
-                    Text(text = stringResource(R.string.start))
+                    Text(
+                        text = stringResource(R.string.start),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))

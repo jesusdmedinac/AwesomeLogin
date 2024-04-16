@@ -42,6 +42,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -85,7 +86,7 @@ class LoginScreen(
         var isUserLoggedInFailureAlertDialogVisible by remember {
             mutableStateOf(false)
         }
-        val screenModel: LoginScreenModel = getScreenModel()
+        val screenModel: LoginScreenModel = navigator.getNavigatorScreenModel()
         val sideEffect by screenModel.container.sideEffectFlow.collectAsState(initial = LoginScreenSideEffect.Idle)
 
         LaunchedEffect(sideEffect) {
@@ -124,12 +125,15 @@ class LoginScreen(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.testTag("login_screen_title")
                 )
-                Text(text = buildAnnotatedString {
-                    append(stringResource(R.string.type_the_password))
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(email)
-                    }
-                })
+                Text(
+                    text = buildAnnotatedString {
+                        append(stringResource(R.string.type_the_password))
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(email)
+                        }
+                    },
+                    style = MaterialTheme.typography.labelSmall
+                )
                 TextField(
                     value = passwordTextFieldValue,
                     onValueChange = {
@@ -149,7 +153,8 @@ class LoginScreen(
                                 isPasswordVisible = it
                             }
                         )
-                    }
+                    },
+                    textStyle = MaterialTheme.typography.labelMedium,
                 )
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -158,7 +163,10 @@ class LoginScreen(
                     TextButton(onClick = {
                         isFunctionNotAvailableAlertDialogVisible = true
                     }) {
-                        Text(text = stringResource(R.string.forgot_password))
+                        Text(
+                            text = stringResource(R.string.forgot_password),
+                            style = MaterialTheme.typography.labelMedium
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -167,19 +175,26 @@ class LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally)
-                        .testTag("login_button")
+                        .testTag("login_button"),
                 ) {
-                    Text(text = stringResource(R.string.login))
+                    Text(
+                        text = stringResource(R.string.login),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
                 Text(
                     text = stringResource(R.string.problems_to_sign_in),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.labelSmall,
                 )
                 TextButton(
                     onClick = { isFunctionNotAvailableAlertDialogVisible = true },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = stringResource(R.string.contact_us))
+                    Text(
+                        text = stringResource(R.string.contact_us),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
         }
