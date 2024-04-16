@@ -2,8 +2,7 @@
 
 ## Demo
 
-<video src="./screenrecording/app_demo.mov" controls="controls">
-</video>
+https://github.com/jesusdmedinac/AwesomeLogin/assets/9106910/9c7ad78d-01ff-4404-883b-fa5a85be1816
 
 ## UML
 
