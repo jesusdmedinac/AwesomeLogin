@@ -1,10 +1,9 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.data.remote
+package com.jesusdmedinac.baubap.awesomelogin.main.data.remote
 
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.RemoteUser
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.RemoteUserCredentials
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.UserRemoteDataSourceImpl
-import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
 import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`

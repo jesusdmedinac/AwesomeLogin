@@ -3,4 +3,24 @@
     <string name="start">Empezar</string>
     <string name="type_your_email_to_start">Ingresa tu correo para empezar</string>
     <string name="type_a_valid_email">Ingresa un correo válido</string>
+    <string name="welcome">¡Bienvenido!</string>
+    <string name="new_account_created">Tu nueva cuenta fue creada</string>
+    <string name="excellent">¡Excelente!</string>
+    <string name="unable_to_create_new_account">No pudimos crear tu cuenta</string>
+    <string name="try_again_later">Vuelve a intentarlo más tarde</string>
+    <string name="try_again">Volver a intentarlo</string>
+    <string name="create_a_new_account">Crea una nueva cuenta</string>
+    <string name="with_your_account">"Con tu correo "</string>
+    <string name="and_enjoy_our_functions">" y disfruta de todas nuestras funciones"</string>
+    <string name="create_my_account">Crear mi cuenta</string>
+    <string name="problems_to_create_account">¿Problemas para crear tu cuenta o iniciar sesión?</string>
+    <string name="contact_us">Contáctanos</string>
+    <string name="hight_again">¡Hola de nuevo!</string>
+    <string name="type_the_password">"Ingresa la contraseña de tu cuenta "</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="problems_to_sign_in">¿Problemas para iniciar sesión?</string>
+    <string name="your_password_matches">Tu contraseña coincide con tu correo %1$s. Puedes disfrutar de todas nuestras funcionalidades.</string>
+    <string name="wrong_password">Tu contraseña es incorrecta</string>
+    <string name="try_to_type_it_again">Intenta volverla a ingresar</string>
 </resources>

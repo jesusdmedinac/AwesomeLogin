@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose
+package com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.AlertDialog

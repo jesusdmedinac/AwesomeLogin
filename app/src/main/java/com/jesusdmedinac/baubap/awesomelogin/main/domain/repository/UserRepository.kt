@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.domain.repository
+package com.jesusdmedinac.baubap.awesomelogin.main.domain.repository
 
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials

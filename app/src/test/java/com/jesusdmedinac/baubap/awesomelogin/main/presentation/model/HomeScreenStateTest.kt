@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.presentation.model
+package com.jesusdmedinac.baubap.awesomelogin.main.presentation.model
 
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat

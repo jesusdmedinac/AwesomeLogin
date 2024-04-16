@@ -4,8 +4,6 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.repository.UserRepository
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
 import com.jesusdmedinac.baubap.awesomelogin.signup.domain.usecase.SignupUseCase
 import org.koin.core.annotation.Single
 import org.orbitmvi.orbit.Container

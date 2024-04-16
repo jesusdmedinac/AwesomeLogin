@@ -1,12 +1,10 @@
 package com.jesusdmedinac.baubap.awesomelogin.signup.presentation.compose.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -31,11 +29,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -43,12 +45,15 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.FunctionNotAvailableAlertDialog
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.SimpleAlertDialog
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.screens.LoginScreen
-import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
+import com.jesusdmedinac.baubap.awesomelogin.R
+import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
+import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.FunctionNotAvailableAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.SimpleAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.signup.SignupModule
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.model.SignupScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.model.SignupScreenSideEffect
+import org.koin.compose.KoinApplication
+import org.koin.ksp.generated.module
 
 @OptIn(ExperimentalMaterial3Api::class)
 class SignupScreen(
@@ -104,14 +109,18 @@ class SignupScreen(
             modifier = Modifier.padding(8.dp)
         ) { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(16.dp)
             ) {
-                Text(text = "Crea una cuenta nueva", style = MaterialTheme.typography.titleLarge)
-                Row {
-                    Text(text = "Con tu correo ")
-                    Text(text = email, fontWeight = FontWeight.Bold)
-                    Text(text = " y disfruta de todas nuestras funciones")
-                }
+                Text(text = stringResource(R.string.create_a_new_account), style = MaterialTheme.typography.titleLarge)
+                Text(text = buildAnnotatedString {
+                    append(stringResource(R.string.with_your_account))
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(email)
+                    }
+                    append(stringResource(R.string.and_enjoy_our_functions))
+                })
                 TextField(
                     value = passwordTextFieldValue,
                     onValueChange = {
@@ -136,19 +145,24 @@ class SignupScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = { screenModel.onSignupClick(email) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .align(Alignment.CenterHorizontally),
                 ) {
-                    Text(text = "Crear mi cuenta")
+                    Text(text = stringResource(R.string.create_my_account))
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                Text(
+                    text = stringResource(R.string.problems_to_create_account),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                )
+                TextButton(
+                    onClick = { isFunctionNotAvailableAlertDialogVisible = true },
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
                 ) {
-                    Text(text = "¿Problemas para crear tu cuenta o iniciar sesión?")
-                    TextButton(onClick = { isFunctionNotAvailableAlertDialogVisible = true }) {
-                        Text(text = "Contáctanos")
-                    }
+                    Text(text = stringResource(R.string.contact_us))
                 }
             }
         }
@@ -178,9 +192,9 @@ class SignupScreen(
         onDismissRequest: () -> Unit = {}
     ) {
         SimpleAlertDialog(
-            title = "¡Bienvenido!",
-            message = "Tu nueva cuenta fue creada",
-            confirmText = "¡Excelente!",
+            title = stringResource(R.string.welcome),
+            message = stringResource(R.string.new_account_created),
+            confirmText = stringResource(R.string.excellent),
             visible,
             onDismissRequest
         )
@@ -192,9 +206,9 @@ class SignupScreen(
         onDismissRequest: () -> Unit = {}
     ) {
         SimpleAlertDialog(
-            title = "No pudimos crear tu cuenta",
-            message = "Vuelve a intentarlo en más tarde",
-            confirmText = "Volver a intentarlo",
+            title = stringResource(R.string.unable_to_create_new_account),
+            message = stringResource(R.string.try_again_later),
+            confirmText = stringResource(R.string.try_again),
             visible,
             onDismissRequest
         )
@@ -204,5 +218,12 @@ class SignupScreen(
 @Preview
 @Composable
 fun SignupScreenPreview() {
-    Navigator(screen = SignupScreen("email"))
+    KoinApplication(application = {
+        modules(
+            CoreModule().module,
+            SignupModule().module,
+        )
+    }) {
+        Navigator(screen = SignupScreen("email"))
+    }
 }

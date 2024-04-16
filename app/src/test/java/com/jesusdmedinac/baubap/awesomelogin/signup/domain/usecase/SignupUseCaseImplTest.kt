@@ -2,17 +2,13 @@ package com.jesusdmedinac.baubap.awesomelogin.signup.domain.usecase
 
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.UserCredentials
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.repository.UserRepository
-import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
-import com.jesusdmedinac.baubap.awesomelogin.login.domain.usecase.LoginUseCaseImpl
+import com.jesusdmedinac.baubap.awesomelogin.main.domain.repository.UserRepository
 import com.jesusdmedinac.baubap.awesomelogin.signup.SignupModule
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule

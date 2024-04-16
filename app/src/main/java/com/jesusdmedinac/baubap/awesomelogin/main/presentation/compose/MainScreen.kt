@@ -1,4 +1,4 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose
+package com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,10 +30,14 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jesusdmedinac.baubap.awesomelogin.R
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.model.HomeScreenModel
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.model.HomeScreenSideEffect
+import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
+import com.jesusdmedinac.baubap.awesomelogin.main.MainModule
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.model.HomeScreenModel
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.model.HomeScreenSideEffect
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.screens.LoginScreen
 import com.jesusdmedinac.baubap.awesomelogin.signup.presentation.compose.screens.SignupScreen
+import org.koin.compose.KoinApplication
+import org.koin.ksp.generated.module
 
 class HomeScreen : Screen {
     @Composable
@@ -118,5 +122,12 @@ class HomeScreen : Screen {
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    Navigator(screen = HomeScreen())
+    KoinApplication(application = {
+        modules(
+            CoreModule().module,
+            MainModule().module,
+        )
+    }) {
+        Navigator(screen = HomeScreen())
+    }
 }

@@ -1,7 +1,7 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase
+package com.jesusdmedinac.baubap.awesomelogin.main.domain.usecase
 
-import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.repository.UserRepository
+import com.jesusdmedinac.baubap.awesomelogin.main.MainModule
+import com.jesusdmedinac.baubap.awesomelogin.main.domain.repository.UserRepository
 import io.mockk.every
 import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
@@ -32,7 +32,7 @@ class CheckAccountExistenceAndAuthenticationUseCaseImplTest : KoinTest {
     fun setUp() {
         startKoin {
             modules(
-                HomeModule().module
+                MainModule().module
             )
         }
         userRepository = declareMock<UserRepository>()

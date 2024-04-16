@@ -1,6 +1,6 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase
+package com.jesusdmedinac.baubap.awesomelogin.main.domain.usecase
 
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.repository.UserRepository
+import com.jesusdmedinac.baubap.awesomelogin.main.domain.repository.UserRepository
 import org.koin.core.annotation.Single
 
 interface CheckAccountExistenceAndAuthenticationUseCase {

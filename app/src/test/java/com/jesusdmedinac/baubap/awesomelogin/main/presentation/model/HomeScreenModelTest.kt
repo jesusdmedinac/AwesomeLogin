@@ -1,9 +1,8 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.presentation.model
+package com.jesusdmedinac.baubap.awesomelogin.main.presentation.model
 
-import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
+import com.jesusdmedinac.baubap.awesomelogin.main.MainModule
+import com.jesusdmedinac.baubap.awesomelogin.main.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockkClass
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -14,8 +13,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.ksp.generated.module
 import org.koin.test.KoinTest
-import org.koin.test.get
-import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import org.orbitmvi.orbit.test.test
@@ -32,7 +29,7 @@ class HomeScreenModelTest : KoinTest {
     @Before
     fun setUp() {
         startKoin {
-            modules(HomeModule().module)
+            modules(MainModule().module)
         }
         checkAccountExistenceAndAuthenticationUseCase = declareMock()
     }

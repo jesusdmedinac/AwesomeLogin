@@ -1,9 +1,8 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.data.repository
+package com.jesusdmedinac.baubap.awesomelogin.main.data.repository
 
 import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.RemoteUser
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.RemoteUserCredentials
-import com.jesusdmedinac.baubap.awesomelogin.home.HomeModule
 import com.jesusdmedinac.baubap.awesomelogin.core.data.remote.UserRemoteDataSource
 import com.jesusdmedinac.baubap.awesomelogin.core.data.repository.UserRepositoryImpl
 import com.jesusdmedinac.baubap.awesomelogin.core.domain.model.User

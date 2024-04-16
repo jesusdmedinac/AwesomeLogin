@@ -1,8 +1,8 @@
-package com.jesusdmedinac.baubap.awesomelogin.home.presentation.model
+package com.jesusdmedinac.baubap.awesomelogin.main.presentation.model
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.jesusdmedinac.baubap.awesomelogin.home.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
+import com.jesusdmedinac.baubap.awesomelogin.main.domain.usecase.CheckAccountExistenceAndAuthenticationUseCase
 import org.koin.core.annotation.Single
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost

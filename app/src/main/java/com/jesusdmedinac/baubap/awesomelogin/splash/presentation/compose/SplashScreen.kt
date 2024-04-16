@@ -9,14 +9,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.HomeScreen
+import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
+import com.jesusdmedinac.baubap.awesomelogin.main.presentation.compose.HomeScreen
+import com.jesusdmedinac.baubap.awesomelogin.splash.SplashModule
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.model.SplashScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.splash.presentation.model.SplashScreenSideEffect
-import kotlinx.coroutines.delay
+import org.koin.compose.KoinApplication
+import org.koin.ksp.generated.module
 
 class SplashScreen : Screen {
 
@@ -44,5 +49,18 @@ class SplashScreen : Screen {
         ) {
             Text(text = "SplashScreen")
         }
+    }
+}
+
+@Preview
+@Composable
+fun SplashScreenPreview() {
+    KoinApplication(application = {
+        modules(
+            CoreModule().module,
+            SplashModule().module,
+        )
+    }) {
+        Navigator(screen = SplashScreen())
     }
 }

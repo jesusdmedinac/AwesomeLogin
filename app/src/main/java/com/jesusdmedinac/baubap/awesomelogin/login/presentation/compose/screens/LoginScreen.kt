@@ -1,10 +1,7 @@
 package com.jesusdmedinac.baubap.awesomelogin.login.presentation.compose.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,11 +29,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -45,10 +45,15 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.FunctionNotAvailableAlertDialog
-import com.jesusdmedinac.baubap.awesomelogin.home.presentation.compose.SimpleAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.R
+import com.jesusdmedinac.baubap.awesomelogin.core.CoreModule
+import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.FunctionNotAvailableAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.core.presentation.compose.SimpleAlertDialog
+import com.jesusdmedinac.baubap.awesomelogin.login.LoginModule
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenModel
 import com.jesusdmedinac.baubap.awesomelogin.login.presentation.model.LoginScreenSideEffect
+import org.koin.compose.KoinApplication
+import org.koin.ksp.generated.module
 
 @OptIn(ExperimentalMaterial3Api::class)
 class LoginScreen(
@@ -103,13 +108,20 @@ class LoginScreen(
             modifier = Modifier.padding(8.dp)
         ) { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(16.dp)
             ) {
-                Text(text = "¡Hola de nuevo!", style = MaterialTheme.typography.titleLarge)
-                Row {
-                    Text(text = "Ingresa la contraseña de tu cuenta ")
-                    Text(text = email, fontWeight = FontWeight.Bold)
-                }
+                Text(
+                    text = stringResource(R.string.hight_again),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Text(text = buildAnnotatedString {
+                    append(stringResource(R.string.type_the_password))
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(email)
+                    }
+                })
                 TextField(
                     value = passwordTextFieldValue,
                     onValueChange = {
@@ -138,25 +150,27 @@ class LoginScreen(
                     TextButton(onClick = {
                         isFunctionNotAvailableAlertDialogVisible = true
                     }) {
-                        Text(text = "¿Olvidaste tu contraseña?")
+                        Text(text = stringResource(R.string.forgot_password))
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = { screenModel.onLoginClick(email) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = "Iniciar sesión")
+                    Text(text = stringResource(R.string.login))
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                Text(
+                    text = stringResource(R.string.problems_to_sign_in),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+                TextButton(
+                    onClick = { isFunctionNotAvailableAlertDialogVisible = true },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text(text = "¿Problemas para iniciar sesión?")
-                    TextButton(onClick = { isFunctionNotAvailableAlertDialogVisible = true }) {
-                        Text(text = "Contáctanos")
-                    }
+                    Text(text = stringResource(R.string.contact_us))
                 }
             }
         }
@@ -188,9 +202,9 @@ class LoginScreen(
         onDismissRequest: () -> Unit = {}
     ) {
         SimpleAlertDialog(
-            title = "¡Bienvenido!",
-            message = "Tu contraseña coincide con tu correo $email. Puedes disfrutar de todas nuestras funcionalidades.",
-            confirmText = "¡Excelente!",
+            title = stringResource(id = R.string.welcome),
+            message = stringResource(R.string.your_password_matches, email),
+            confirmText = stringResource(id = R.string.excellent),
             visible,
             onDismissRequest
         )
@@ -202,9 +216,9 @@ class LoginScreen(
         onDismissRequest: () -> Unit = {}
     ) {
         SimpleAlertDialog(
-            title = "Tu contraseña es incorrecta",
-            message = "Intenta volverla a ingresar",
-            confirmText = "Volver a intentarlo",
+            title = stringResource(R.string.wrong_password),
+            message = stringResource(R.string.try_to_type_it_again),
+            confirmText = stringResource(id = R.string.try_again),
             visible,
             onDismissRequest
         )
@@ -214,5 +228,12 @@ class LoginScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    Navigator(screen = LoginScreen("email"))
+    KoinApplication(application = {
+        modules(
+            CoreModule().module,
+            LoginModule().module,
+        )
+    }) {
+        Navigator(screen = LoginScreen("email"))
+    }
 }
